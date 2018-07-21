@@ -7,12 +7,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content  class="button">
+  <button ion-button (click)="showBanner()"> Banner Ad </button>
+  <button ion-button (click)="showInterstitialBanner()"> Interstitial Ad </button>
+  <button ion-button (click)="showRewardedBanner()"> Rewarded Banner Ad </button>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>

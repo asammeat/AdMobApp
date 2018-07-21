@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
+import { AdMobFree, AdMobFreeRewardVideoConfig , AdMobFreeBannerConfig, AdMobFreeInterstitialConfig }  from '@ionic-native/admob-free';
+
 
 @Component({
   selector: 'page-list',
@@ -10,28 +12,65 @@ export class ListPage {
   icons: string[];
   items: Array<{title: string, note: string, icon: string}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
+  constructor(public navCtrl: NavController,
+              private admob: AdMobFree,
+              private platform: Platform
+            ){}
 
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
+            showBanner() {
+              if(this.platform.is('cordova')){
+              const bannerConfig: AdMobFreeBannerConfig = {
+                id: 'ca-app-pub-7566951584599431/3800381509',
+                isTesting: false,
+                autoShow: true,
+              };
 
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
-  }
+                this.admob.banner.config(bannerConfig);
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
-    });
-  }
+              this.admob.banner.prepare()
+              .then(()=>{
+                  this.admob.banner.show();
+                })
+                .catch(e => console.log(e));
+            }
+            }
+
+
+            showInterstitialBanner() {
+            if(this.platform.is('cordova')){
+            const varConfig: AdMobFreeInterstitialConfig= {
+              id: 'ca-app-pub-7566951584599431/3089681478',
+              isTesting: true,
+              autoShow: true,
+            };
+
+              this.admob.interstitial.config(varConfig);
+
+            this.admob.interstitial.prepare()
+            .then(()=>{
+                this.admob.interstitial.show();
+              })
+              .catch(e => console.log(e));
+            }
+            }
+
+            showRewardedBanner() {
+            if(this.platform.is('cordova')){
+            const varConfig: AdMobFreeRewardVideoConfig= {
+              id: 'ca-app-pub-7566951584599431/3840899630',
+              isTesting: true,
+              autoShow: true,
+            };
+
+              this.admob.rewardVideo.config(varConfig);
+
+            this.admob.rewardVideo.prepare()
+            .then(()=>{
+                this.admob.rewardVideo.show();
+              })
+              .catch(e => console.log(e));
+            }
+            }
+
+
 }
